@@ -73,13 +73,15 @@ function processarResposta(resposta) {
             `
         }
 
-        else if (resposta.data[i].type == "private_message" && ((nome == resposta.data[i].to) || nome == resposta.data[i].from)) {
+        else if (resposta.data[i].type == "private_message") {
+            if((nome === resposta.data[i].to) || (nome === resposta.data[i].from) || (resposta.data[i].to === "Todos")){
             mesangensNaTela += `
             <li class="${resposta.data[i].type}">
                 <p>(${resposta.data[i].time})</p>
                 <p><strong>${resposta.data[i].from}</strong> reservadamente para <strong>${resposta.data[i].to}</strong>: ${resposta.data[i].text}</p>
             </li>
             `
+            }
         } 
         
         else {
@@ -195,7 +197,6 @@ function abrirSidebar(elemento){
 }
 
 function fecharSidebar(elemento) {
-    console.log(elemento);
     let fundoEscuro = document.querySelector(".sidebar");
     fundoEscuro.classList.add("escondido");
 }
@@ -240,7 +241,6 @@ function mensagemPara(elemento) {
     adicionarCertinho.classList.add("aparecendoContato");
 
     let nomeDaPessoa = elemento.querySelector("p").innerHTML;
-    console.log(nomeDaPessoa);
     destinoMensagem = nomeDaPessoa;
 
     let mensagemParaAlguem = document.querySelector(".texto_da_mensagem .destino")
@@ -257,7 +257,6 @@ function tipoDeMensagem(elemento) {
     adicionarCertinho.classList.add("aparecendoTipoDeMensagem");
 
     let mensagemDoTipo = elemento.querySelector("p").innerHTML.toLowerCase();
-    console.log(mensagemDoTipo);
     modoMensagem = mensagemDoTipo;
     
     let mensagemParaAlguemModo = document.querySelector(".texto_da_mensagem .modo")
