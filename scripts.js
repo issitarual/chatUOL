@@ -18,8 +18,8 @@ function entrando() {
     let carregando = document.querySelector(".telaDeEntrada");
     carregando.innerHTML = `
     <div class="telaDeEntrada">
-        <img src="bate-papo UOL.jpg" alt="">
-        <img src="MnyxU.gif" alt="">
+        <img src="imagens/bate-papo UOL.jpg" alt="">
+        <img src="imagens/MnyxU.gif" alt="">
         <p>Entrando...</p>
     </div>
     `
@@ -42,7 +42,7 @@ function tratarErrorEntraNaSala() {
     let carregando = document.querySelector(".telaDeEntrada");
         carregando.innerHTML = `
         <div class="telaDeEntrada">
-            <img src="bate-papo UOL.jpg" alt="">
+            <img src="imagens/bate-papo UOL.jpg" alt="">
             <input type="text" class="nome" name="" placeholder="Digite seu nome">
             <input class="entrar" onclick="entrarNaSala()" type="button" value="Entrar">
         </div>
