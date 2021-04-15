@@ -8,12 +8,25 @@ function entrarNaSala(){
     const dados = {name: nomeDoUsuario};
     const requisicao = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/uol/participants", dados);
     
+    entrando();
+
     requisicao.then(tratarSucessoEntrarNaSala);
     requisicao.catch(tratarErrorEntraNaSala);
 }
 
+function entrando() {
+    let carregando = document.querySelector(".tela-de-entrada");
+    carregando.innerHTML = `
+    <div class="tela-de-entrada">
+        <img src="bate-papo UOL.jpg" alt="">
+        <img src="MnyxU.gif" alt="">
+        <p>Entrando...</p>
+    </div>
+    `
+}
 
 function tratarSucessoEntrarNaSala() {
+
     let entrar = document.querySelector(".tela-de-entrada");
     entrar.classList.add("escondido");
 
@@ -25,6 +38,15 @@ function tratarSucessoEntrarNaSala() {
 
 function tratarErrorEntraNaSala() {
     alert("Este nome já está em uso, digite o nome novamente");
+
+    let carregando = document.querySelector(".tela-de-entrada");
+        carregando.innerHTML = `
+        <div class="tela-de-entrada">
+            <img src="bate-papo UOL.jpg" alt="">
+            <input type="text" class="nome" name="" placeholder="Digite seu nome">
+            <input class="entrar" onclick="entrarNaSala()" type="button" value="Entrar">
+        </div>
+        `       
 }
 
 function usuarioTaOn() {
@@ -73,17 +95,73 @@ function processarResposta(resposta) {
     mensagens.innerHTML = mesangensNaTela;
 }
 
+let modoMensagem;
+let destinoMensagem;
+
 function enviarMensagem() {
     let input = document.querySelector(".escreverMensagem");
     let mensagemDigitada = input.value;
 
-        const dados = {
-            from: nome,
-            to: "Todos",
-            text: mensagemDigitada,
-            type: "message" // ou "private_message" para o bônus
-        };
-       
+    let dados = {};
+
+        if(modoMensagem == "reservadamente"){
+            if(destinoMensagem == null){
+                dados = {
+                    from: nome,
+                    to: "Todos",
+                    text: mensagemDigitada,
+                    type: "private_message" // ou "private_message" para o bônus
+                };
+            }
+
+            else{
+            dados = {
+                from: nome,
+                to: destinoMensagem,
+                text: mensagemDigitada,
+                type: "private_message" // ou "private_message" para o bônus
+                };
+            } 
+        }
+
+        else if(modoMensagem == "público"){
+            if(destinoMensagem == null){
+                dados = {
+                    from: nome,
+                    to: "Todos",
+                    text: mensagemDigitada,
+                    type: "message" // ou "private_message" para o bônus
+                    };
+            }
+
+            else{
+                dados = {
+                    from: nome,
+                    to: destinoMensagem,
+                    text: mensagemDigitada,
+                    type: "message" // ou "private_message" para o bônus
+                    };
+            }
+        }
+
+        else if(modoMensagem == null && destinoMensagem != null){
+            dados = {
+                from: nome,
+                to: destinoMensagem,
+                text: mensagemDigitada,
+                type: "message" // ou "private_message" para o bônus
+                };  
+        }
+
+        else{
+           dados = {
+                from: nome,
+                to: "Todos",
+                text: mensagemDigitada,
+                type: "message" // ou "private_message" para o bônus
+                }; 
+        }
+               
     const requisicao = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/uol/messages", dados);
  
     requisicao.then(tratarSucessoEnviarMensagem);
@@ -163,6 +241,10 @@ function mensagemPara(elemento) {
 
     let nomeDaPessoa = elemento.querySelector("p").innerHTML;
     console.log(nomeDaPessoa);
+    destinoMensagem = nomeDaPessoa;
+
+    let mensagemParaAlguem = document.querySelector(".texto_da_mensagem .destino")
+    mensagemParaAlguem.innerHTML =`Enviando para ${nomeDaPessoa}`  
 }
 
 function tipoDeMensagem(elemento) {
@@ -174,6 +256,10 @@ function tipoDeMensagem(elemento) {
     adicionarCertinho.classList.remove("escondido");
     adicionarCertinho.classList.add("aparecendoTipoDeMensagem");
 
-    let mensagemDoTipo = elemento.querySelector("p").innerHTML;
+    let mensagemDoTipo = elemento.querySelector("p").innerHTML.toLowerCase();
     console.log(mensagemDoTipo);
+    modoMensagem = mensagemDoTipo;
+    
+    let mensagemParaAlguemModo = document.querySelector(".texto_da_mensagem .modo")
+    mensagemParaAlguemModo.innerHTML = `(${mensagemDoTipo})`
 }

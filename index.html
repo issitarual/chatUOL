@@ -16,6 +16,7 @@
 <body>
 
     <div class="tela-de-entrada">
+
         <img src="bate-papo UOL.jpg" alt="">
         <input type="text" class="nome" name="" placeholder="Digite seu nome">
         <input class="entrar" onclick="entrarNaSala()" type="button" value="Entrar">
@@ -28,7 +29,8 @@
     </div>
 
     <!-- Sidebar -->
-        <div class="sidebar escondido" onclick="fecharSidebar(this)">
+        <div class="sidebar escondido">
+            <div class="lado-opaco" onclick="fecharSidebar(this)"></div>
             <div class="participantes-ativos">
                 <div class="titulo-sidebar"><p>Escolha um contato para enviar mensagem</p></div>
                 <ul class="contatos">
@@ -58,7 +60,13 @@
     <!-- Fim do front -->
 
     <div class="caixa_de_mensagem">
-        <input class="escreverMensagem" type="text" name="" placeholder="Escreva aqui...">
+        <div class="texto_da_mensagem">
+            <input class="escreverMensagem" type="text" name="" placeholder="Escreva aqui...">
+            <p>
+            <span class="destino"></span>
+            <span class="modo"></span>
+            </p>
+        </div>
         <ion-icon class="enviar" onclick="enviarMensagem()" name="paper-plane-outline"></ion-icon>
     </div>
 
