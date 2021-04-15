@@ -15,7 +15,7 @@
 </head>
 <body>
 
-    <div class="tela-de-entrada">
+    <div class="telaDeEntrada">
 
         <img src="bate-papo UOL.jpg" alt="">
         <input type="text" class="nome" name="" placeholder="Digite seu nome">
@@ -25,18 +25,18 @@
 
     <div class="topo">
         <img src="bate-papo UOL.jpg" alt="">
-        <ion-icon onclick="abrirSidebar(this)" name="people"></ion-icon>
+        <ion-icon onclick="abrirMenuLateral(this)" name="people"></ion-icon>
     </div>
 
-    <!-- Sidebar -->
-        <div class="sidebar escondido">
-            <div class="lado-opaco" onclick="fecharSidebar(this)"></div>
-            <div class="participantes-ativos">
-                <div class="titulo-sidebar"><p>Escolha um contato para enviar mensagem</p></div>
+    <!-- Menu lateral -->
+        <div class="menuLateral escondido">
+            <div class="ladoOpaco" onclick="fecharMenuLateral(this)"></div>
+            <div class="participantesAtivos">
+                <div class="tituloMenuLateral"><p>Escolha um contato para enviar mensagem</p></div>
                 <ul class="contatos">
                     
                 </ul>
-                <div class="titulo-sidebar"><p>Escolha a visibilidade</p></div>
+                <div class="tituloMenuLateral"><p>Escolha a visibilidade</p></div>
                 <ul>
                     <li onclick="tipoDeMensagem(this)">
                         <ion-icon name="lock-open"></ion-icon>
@@ -51,16 +51,16 @@
                 </ul>
             </div>
         </div>
-    <!-- Fim da Sidebar -->
+    <!-- Fim da Menu Lateral -->
 
-    <!-- Só para deixar o front igual por enquanto -->
-    <ul class="mensagens_enviadas">
+    <!-- Mensagens enviadas -->
+    <ul class="mensagensEnviadas">
     
     </ul>
-    <!-- Fim do front -->
+    <!-- Fim das mensagens enviadas -->
 
-    <div class="caixa_de_mensagem">
-        <div class="texto_da_mensagem">
+    <div class="caixaDeMensagem">
+        <div class="textoDaMensagem">
             <input class="escreverMensagem" type="text" name="" placeholder="Escreva aqui...">
             <p>
             <span class="destino"></span>

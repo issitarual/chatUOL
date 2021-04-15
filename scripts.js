@@ -15,9 +15,9 @@ function entrarNaSala(){
 }
 
 function entrando() {
-    let carregando = document.querySelector(".tela-de-entrada");
+    let carregando = document.querySelector(".telaDeEntrada");
     carregando.innerHTML = `
-    <div class="tela-de-entrada">
+    <div class="telaDeEntrada">
         <img src="bate-papo UOL.jpg" alt="">
         <img src="MnyxU.gif" alt="">
         <p>Entrando...</p>
@@ -27,7 +27,7 @@ function entrando() {
 
 function tratarSucessoEntrarNaSala() {
 
-    let entrar = document.querySelector(".tela-de-entrada");
+    let entrar = document.querySelector(".telaDeEntrada");
     entrar.classList.add("escondido");
 
     buscarMensagem();
@@ -39,9 +39,9 @@ function tratarSucessoEntrarNaSala() {
 function tratarErrorEntraNaSala() {
     alert("Este nome já está em uso, digite o nome novamente");
 
-    let carregando = document.querySelector(".tela-de-entrada");
+    let carregando = document.querySelector(".telaDeEntrada");
         carregando.innerHTML = `
-        <div class="tela-de-entrada">
+        <div class="telaDeEntrada">
             <img src="bate-papo UOL.jpg" alt="">
             <input type="text" class="nome" name="" placeholder="Digite seu nome">
             <input class="entrar" onclick="entrarNaSala()" type="button" value="Entrar">
@@ -60,7 +60,7 @@ function buscarMensagem() {
 }
 
 function processarResposta(resposta) {
-    let mensagens = document.querySelector(".mensagens_enviadas")
+    let mensagens = document.querySelector(".mensagensEnviadas")
     let mesangensNaTela = "";
 
     for(let i = 0; i < resposta.data.length; i++){
@@ -92,9 +92,11 @@ function processarResposta(resposta) {
             </li>
             `
         }
+        
     }
 
     mensagens.innerHTML = mesangensNaTela;
+    mensagens.scrollIntoView({block: "end", behavior: "smooth"});
 }
 
 let modoMensagem;
@@ -112,7 +114,7 @@ function enviarMensagem() {
                     from: nome,
                     to: "Todos",
                     text: mensagemDigitada,
-                    type: "private_message" // ou "private_message" para o bônus
+                    type: "private_message" 
                 };
             }
 
@@ -121,7 +123,7 @@ function enviarMensagem() {
                 from: nome,
                 to: destinoMensagem,
                 text: mensagemDigitada,
-                type: "private_message" // ou "private_message" para o bônus
+                type: "private_message" 
                 };
             } 
         }
@@ -132,7 +134,7 @@ function enviarMensagem() {
                     from: nome,
                     to: "Todos",
                     text: mensagemDigitada,
-                    type: "message" // ou "private_message" para o bônus
+                    type: "message" 
                     };
             }
 
@@ -141,7 +143,7 @@ function enviarMensagem() {
                     from: nome,
                     to: destinoMensagem,
                     text: mensagemDigitada,
-                    type: "message" // ou "private_message" para o bônus
+                    type: "message" 
                     };
             }
         }
@@ -151,7 +153,7 @@ function enviarMensagem() {
                 from: nome,
                 to: destinoMensagem,
                 text: mensagemDigitada,
-                type: "message" // ou "private_message" para o bônus
+                type: "message" 
                 };  
         }
 
@@ -160,7 +162,7 @@ function enviarMensagem() {
                 from: nome,
                 to: "Todos",
                 text: mensagemDigitada,
-                type: "message" // ou "private_message" para o bônus
+                type: "message" 
                 }; 
         }
                
@@ -187,17 +189,17 @@ function tratarErroEnviarMensagem() {
     window.location.reload();
 }
 
-function abrirSidebar(elemento){
-    let sidebar = document.querySelector(".sidebar");
-    sidebar.classList.remove("escondido");
+function abrirMenuLateral(elemento){
+    let menuLateral = document.querySelector(".menuLateral");
+    menuLateral.classList.remove("escondido");
 
     buscarPessoasNoChat();
 
     setInterval(buscarPessoasNoChat,10000);
 }
 
-function fecharSidebar(elemento) {
-    let fundoEscuro = document.querySelector(".sidebar");
+function fecharMenuLateral(elemento) {
+    let fundoEscuro = document.querySelector(".menuLateral");
     fundoEscuro.classList.add("escondido");
 }
 
@@ -210,25 +212,73 @@ function pessoasNoChat(resposta) {
     let contatosAtivos = document.querySelector(".contatos");
     contatos = "";
 
-    for(let i = 0; i < resposta.data.length; i++){
-        contatos += `
-            <li onclick="mensagemPara(this)">
-                <ion-icon name="person-circle"></ion-icon>
-                <p>${resposta.data[i].name}</p>
-                <ion-icon class="certinho escondido" name="checkmark"></ion-icon>
-            </li>
-        `
-   
+    if (destinoMensagem == null){
 
-   contatosAtivos.innerHTML = `
-        <li onclick="mensagemPara(this)">
-           <ion-icon name="people"></ion-icon>
-           <p>Todos</p>
-           <ion-icon class="certinho aparecendoContato" name="checkmark"></ion-icon>
-        </li>
-    ` + contatos;
+        for(let i = 0; i < resposta.data.length; i++){
+            contatos += `
+                <li onclick="mensagemPara(this)">
+                    <ion-icon name="person-circle"></ion-icon>
+                    <p>${resposta.data[i].name}</p>
+                    <ion-icon class="certinho escondido" name="checkmark"></ion-icon>
+                </li>
+            `
+        }
+
+        contatosAtivos.innerHTML = `
+            <li onclick="mensagemPara(this)">
+            <ion-icon name="people"></ion-icon>
+            <p>Todos</p>
+            <ion-icon class="certinho aparecendoContato" name="checkmark"></ion-icon>
+            </li>
+        ` + contatos;
+        
+    }
+    else{
+        let contador = 0;
+        for(let i = 0; i < resposta.data.length; i++){
+            
+            if(resposta.data[i].name == destinoMensagem){
+                contatos += `
+                <li onclick="mensagemPara(this)">
+                    <ion-icon name="person-circle"></ion-icon>
+                    <p>${resposta.data[i].name}</p>
+                    <ion-icon class="certinho aparecendoContato" name="checkmark"></ion-icon>
+                </li>
+                ` 
+                contador++;
+            }
+            else{
+                contatos += `
+                <li onclick="mensagemPara(this)">
+                    <ion-icon name="person-circle"></ion-icon>
+                    <p>${resposta.data[i].name}</p>
+                    <ion-icon class="certinho escondido" name="checkmark"></ion-icon>
+                </li>
+            `
+            }
+            if(contador == 0){
+                contatosAtivos.innerHTML = `
+                <li onclick="mensagemPara(this)">
+                    <ion-icon name="people"></ion-icon>
+                    <p>Todos</p>
+                    <ion-icon class="certinho aparecendoContato" name="checkmark"></ion-icon>
+                </li>
+            ` + contatos;
+            }
+            }
+
+            if(contador == 1){
+            contatosAtivos.innerHTML = `
+                <li onclick="mensagemPara(this)">
+                    <ion-icon name="people"></ion-icon>
+                    <p>Todos</p>
+                    <ion-icon class="certinho escondido" name="checkmark"></ion-icon>
+                </li>
+            ` + contatos;
+            }
+        }
 }
-}
+
 
 
 function mensagemPara(elemento) {
@@ -243,15 +293,18 @@ function mensagemPara(elemento) {
     let nomeDaPessoa = elemento.querySelector("p").innerHTML;
     destinoMensagem = nomeDaPessoa;
 
-    let mensagemParaAlguem = document.querySelector(".texto_da_mensagem .destino")
+    let mensagemParaAlguem = document.querySelector(".textoDaMensagem .destino")
     mensagemParaAlguem.innerHTML =`Enviando para ${nomeDaPessoa}`  
 }
+
+let identificarUltimoContato;
 
 function tipoDeMensagem(elemento) {
     let certinhoExcluido = document.querySelector(".aparecendoTipoDeMensagem")
     certinhoExcluido.classList.add("escondido");
     certinhoExcluido.classList.remove("aparecendoTipoDeMensagem");
 
+    identificarUltimoContato = elemento;
     let adicionarCertinho = elemento.querySelector(".escondido")
     adicionarCertinho.classList.remove("escondido");
     adicionarCertinho.classList.add("aparecendoTipoDeMensagem");
@@ -259,6 +312,6 @@ function tipoDeMensagem(elemento) {
     let mensagemDoTipo = elemento.querySelector("p").innerHTML.toLowerCase();
     modoMensagem = mensagemDoTipo;
     
-    let mensagemParaAlguemModo = document.querySelector(".texto_da_mensagem .modo")
+    let mensagemParaAlguemModo = document.querySelector(".textoDaMensagem .modo")
     mensagemParaAlguemModo.innerHTML = `(${mensagemDoTipo})`
 }
