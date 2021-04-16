@@ -1,3 +1,5 @@
+//entrar no bate-papo
+
 let nome = "";
 
 function entrarNaSala(){
@@ -17,11 +19,9 @@ function entrarNaSala(){
 function entrando() {
     let carregando = document.querySelector(".telaDeEntrada");
     carregando.innerHTML = `
-    <div class="telaDeEntrada">
         <img src="imagens/bate-papo UOL.jpg" alt="">
         <img src="imagens/MnyxU.gif" alt="">
         <p>Entrando...</p>
-    </div>
     `
 }
 
@@ -41,11 +41,9 @@ function tratarErrorEntraNaSala() {
 
     let carregando = document.querySelector(".telaDeEntrada");
         carregando.innerHTML = `
-        <div class="telaDeEntrada">
             <img src="imagens/bate-papo UOL.jpg" alt="">
             <input type="text" class="nome" name="" placeholder="Digite seu nome">
             <input class="entrar" onclick="entrarNaSala()" type="button" value="Entrar">
-        </div>
         `       
 }
 
@@ -53,6 +51,8 @@ function usuarioTaOn() {
     const dados = {name: nome};
     const requisicao = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/uol/status", dados);
 }
+
+//carregar mensagem na página
 
 function buscarMensagem() {
     const promessa = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/uol/messages");
@@ -64,6 +64,8 @@ function processarResposta(resposta) {
     let mesangensNaTela = "";
 
     for(let i = 0; i < resposta.data.length; i++){
+
+        //mensagem do tipo status
         if (resposta.data[i].type == "status"){
         mesangensNaTela += `
             <li class="${resposta.data[i].type}">
@@ -73,6 +75,8 @@ function processarResposta(resposta) {
             `
         }
 
+
+        //mensagem do tipo privada
         else if (resposta.data[i].type == "private_message") {
             if((nome === resposta.data[i].to) || (nome === resposta.data[i].from) || (resposta.data[i].to === "Todos")){
             mesangensNaTela += `
@@ -84,6 +88,7 @@ function processarResposta(resposta) {
             }
         } 
         
+        //mensagem comum
         else {
             mesangensNaTela += `
             <li class="${resposta.data[i].type}">
@@ -94,10 +99,11 @@ function processarResposta(resposta) {
         }
         
     }
-
-    mensagens.innerHTML = mesangensNaTela;
+    mensagens.innerHTML = mesangensNaTela + `<div class="tamCaixaDeMensagem"></div>`;
     mensagens.scrollIntoView({block: "end", behavior: "smooth"});
 }
+
+// enviar mensagem
 
 let modoMensagem;
 let destinoMensagem;
@@ -172,6 +178,16 @@ function enviarMensagem() {
     requisicao.catch(tratarErroEnviarMensagem);
 }
 
+function tratarSucessoEnviarMensagem() {
+    buscarMensagem();
+}
+
+function tratarErroEnviarMensagem() {
+    window.location.reload();
+}
+
+//enviar mensagem com enter
+
 document.addEventListener("keypress", function(e) {
     if(e.key === 'Enter') {
     
@@ -181,13 +197,7 @@ document.addEventListener("keypress", function(e) {
     }
   });
 
-function tratarSucessoEnviarMensagem() {
-    buscarMensagem();
-}
-
-function tratarErroEnviarMensagem() {
-    window.location.reload();
-}
+//menu lateral
 
 function abrirMenuLateral(elemento){
     let menuLateral = document.querySelector(".menuLateral");
@@ -207,6 +217,8 @@ function buscarPessoasNoChat() {
     const promessa = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/uol/participants");
     promessa.then(pessoasNoChat);
 }
+
+//pessoas online
 
 function pessoasNoChat(resposta) {
     let contatosAtivos = document.querySelector(".contatos");
@@ -264,6 +276,10 @@ function pessoasNoChat(resposta) {
                     <ion-icon class="certinho aparecendoContato" name="checkmark"></ion-icon>
                 </li>
             ` + contatos;
+                destinoMensagem = "Todos";
+
+                let mensagemParaAlguem = document.querySelector(".textoDaMensagem .destino")
+                mensagemParaAlguem.innerHTML ="Enviando para Todos"
             }
             }
 
@@ -279,7 +295,7 @@ function pessoasNoChat(resposta) {
         }
 }
 
-
+//certinho no menu lateral e mudando a caixa de envio de mensagem
 
 function mensagemPara(elemento) {
     let certinhoExcluido = document.querySelector(".aparecendoContato")
